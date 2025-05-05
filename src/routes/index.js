@@ -1,9 +1,8 @@
 import express from 'express';
-
+import userRoutes from './user.routes.js'
+import productRoutes from './product.routes.js'
 const router = express.Router();
-import { register,login } from '../controller/user.controller.js';
 
-router.post('/signup', register);
-router.post('/login', login);
-
+router.use('/auth', userRoutes);
+router.use('/api', productRoutes);
 export default router;
