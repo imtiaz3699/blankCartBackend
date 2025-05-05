@@ -1,0 +1,1 @@
+// DATABASE_URL = mongodb+srv://imtiazali78652:Zcwolvo2tpY22yfI@cluster0.a1o0nur.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
