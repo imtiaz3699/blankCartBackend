@@ -4,6 +4,7 @@ import productRoutes from './product.routes.js'
 import categoryRoutes from './category.routes.js'
 import cartRoutes from './cart.routes.js'
 import favouritesRoute from './favourites.routes.js'
+import orderRoutes from './order.routes.js'
 const router = express.Router();
 
 router.use('/auth', userRoutes);
@@ -11,4 +12,5 @@ router.use('/api', productRoutes);
 router.use('/api', categoryRoutes);
 router.use("/api",cartRoutes)
 router.use("/api",favouritesRoute)
+router.use("/api",orderRoutes)
 export default router;
