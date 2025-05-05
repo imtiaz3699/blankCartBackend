@@ -1,4 +1,3 @@
-// controllers/cartController.js
 import { Cart } from "../models/cart.model.js";
 import { handleError } from "../utils/helpers.js";
 export const addToCart = async (req, res) => {
@@ -38,7 +37,6 @@ export const addToCart = async (req, res) => {
         return handleError(res, e.message, 500);
     }
 };
-
 
 export const removeFromCart = async (req, res) => {
     const { browserId, productId } = req.body;
@@ -81,7 +79,6 @@ export const removeFromCart = async (req, res) => {
         res.status(500).json({ success: false, message: e.message });
     }
 };
-
 
 export const getCart = async (req, res) => {
     const { browserId, userId, page = 1, limit = 10 } = req.query;
