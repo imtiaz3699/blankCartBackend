@@ -45,7 +45,13 @@ export const getProducts = async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
     try {
         const products = await Product.find({}).skip((page - 1) * parseInt(limit)).limit(limit);
-        return handleSuccess(res, products);
+        const data = {
+            products: products,
+            page: page,
+            limit: limit,
+            total: await Product.find({}).countDocuments()
+        }
+        return handleSuccess(res, data);
     } catch (e) {
         return handleError(res, e.message, 500);
     }
@@ -53,7 +59,7 @@ export const getProducts = async (req, res) => {
 
 export const getSingleProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('category');
         if (!product) {
             return handleError(res, "Product not found", 404);
         }
@@ -62,7 +68,6 @@ export const getSingleProduct = async (req, res) => {
         return handleError(res, e.message, 500);
     }
 }
-
 
 export const heroProduct = async (req, res) => {
     try {
@@ -87,7 +92,7 @@ export const getHeroProducts = async (req, res) => {
 
 export const addBestDeals = async (req, res) => {
     try {
-        const isProduct = await Product.findByIdAndUpdate(req.params.id, { is_best_deals: req.body.is_best_deals }, { new: true });
+        const isProduct = await Product.findByIdAndUpdate(req.params.id, { best_deal: req.body.is_best_deals }, { new: true });
         if (!isProduct) {
             return handleError(res, "Product not found", 404);
         }
@@ -97,4 +102,30 @@ export const addBestDeals = async (req, res) => {
     }
 }
 
+export const getBestDealsProduct = async (req, res) => {
+    try {
+        const products = await Product.find({ best_deal: true });
+        return handleSuccess(res, products);
+    } catch (e) {
+        return handleError(res, e.message, 500);
+    }
+}
 
+export const getProductByCategory = async (req, res) => {
+    const { page = 1, limit = 10 } = req.query;
+    try {
+        const products = await Product.find({ category: req.params.id }).skip((page - 1) * parseInt(limit)).limit(limit);
+        const data = {
+            products: products,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: await Product.find({ category: req.params.id }).countDocuments()
+        }
+        if (!products) {
+            return handleError(res, "Product not found", 404);
+        }
+        return handleSuccess(res, data);
+    } catch (e) {
+        return handleError(res, e.message, 500);
+    }
+}
